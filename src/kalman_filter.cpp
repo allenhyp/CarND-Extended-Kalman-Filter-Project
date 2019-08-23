@@ -2,7 +2,6 @@
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
-using 
 
 /* 
  * Please note that the Eigen library does not initialize 
@@ -37,8 +36,10 @@ void KalmanFilter::Update(const VectorXd &z) {
    * TODO: update the state by using Kalman Filter equations
    */
   VectorXd z_pred = H_ * x_;
-  VectorXd y = z - z_pred;
-  
+  VectorXd y = VectorXd(2);
+  y = z - z_pred;
+
+
   CalculateEstimation(y);
 }
 
@@ -54,13 +55,13 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   double rho = std::sqrt(px * px + py * py);
   double phi = std::atan2(py, px);
   double rho_dot = (px * vx + py * vy) / rho;
-  rho_dot = max(rho_dot, 0.0001);
+  rho_dot = std::max(rho_dot, 0.0001);
 
   VectorXd h_x = VectorXd(3);
   h_x << rho, phi, rho_dot;
 
-  MatrixXd Hj = Tools::CalculateJacobian(z)
-  VectorXd y = z - h_x;
+  VectorXd y = VectorXd(4);
+  y = z - h_x;
 
   // Normalize phi angle and bring it in the range (-pi, pi)
   while (y[1] > M_PI) y[1] -= 2.0 * M_PI;
