@@ -46,6 +46,12 @@ class KalmanFilter {
    */
   void UpdateEKF(const Eigen::VectorXd &z);
 
+  /**
+   * Calculate the estimation by the error of the measurement and the prediction
+   * @param y The error of measurement and prediction
+   */
+  void CalculateEstimation(const Eigen::VectorXd &y);
+
   // state vector
   Eigen::VectorXd x_;
 
