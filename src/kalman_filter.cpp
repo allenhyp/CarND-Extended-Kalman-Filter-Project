@@ -52,10 +52,10 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   double vx = x_(2);
   double vy = x_(3);
 
-  double rho = std::sqrt(px * px + py * py);
-  double phi = std::atan2(py, px);
+  double rho = sqrt(px * px + py * py);
+  rho = std::max(rho, 0.0001);
+  double phi = atan2(py, px);
   double rho_dot = (px * vx + py * vy) / rho;
-  rho_dot = std::max(rho_dot, 0.0001);
 
   VectorXd h_x = VectorXd(3);
   h_x << rho, phi, rho_dot;
@@ -64,8 +64,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   y = z - h_x;
 
   // Normalize phi angle and bring it in the range (-pi, pi)
-  while (y[1] > M_PI) y[1] -= 2.0 * M_PI;
-  while (y[1] <-M_PI) y[1] += 2.0 * M_PI;
+  while (y(1) > M_PI) y(1) -= 2.0 * M_PI;
+  while (y(1) < -M_PI) y(1) += 2.0 * M_PI;
 
   CalculateEstimation(y);
 }
@@ -74,12 +74,11 @@ void KalmanFilter::CalculateEstimation(const VectorXd &y) {
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();
-  MatrixXd PHt = P_ * Ht;
-  MatrixXd K = PHt * Si;
+  MatrixXd K = P_ * Ht * Si;
 
   //new estimate
   x_ = x_ + (K * y);
   long x_size = x_.size();
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
-  P_ = (I - K * H_) * P_;
+  P_ = (I - (K * H_)) * P_;
 }
