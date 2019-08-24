@@ -47,10 +47,10 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   /**
    * TODO: update the state by using Extended Kalman Filter equations
    */
-  double px = z(0);
-  double py = z(1);
-  double vx = z(2);
-  double vy = z(3);
+  double px = x_(0);
+  double py = x_(1);
+  double vx = x_(2);
+  double vy = x_(3);
 
   double rho = std::sqrt(px * px + py * py);
   double phi = std::atan2(py, px);
