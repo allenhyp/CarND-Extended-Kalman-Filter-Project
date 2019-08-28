@@ -46,7 +46,7 @@ Here is the main protocol that main.cpp uses for uWebSocketIO in communicating w
 ---
 
 [image1]: ./dataset1_result.png "dataset1 result"
-[image2]: ./dataset2_result.jpg "dataset2 result"
+[image2]: ./dataset2_result.png "dataset2 result"
 
 ## Other Important Dependencies
 
