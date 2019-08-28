@@ -40,6 +40,11 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
   // calculate the squared root
   rmse = rmse.array().sqrt();
 
+  // Check if rmse was under the limitation
+  if (rmse(0) > 0.11 || rmse(1) > 0.11 || rmse(2) > 0.52 || rmse(3) > 0.52) {
+  	cout << "rmse = " << rmse << endl;
+  }
+
   // return the result
   return rmse;
 }
